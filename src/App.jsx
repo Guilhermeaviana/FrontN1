@@ -5,6 +5,9 @@ import Home from './pages/Home/Home';
 import Collection from './pages/Collection/Collection';
 import About from './pages/About/About';
 import Contact from './pages/Contact/Contact';
+import LoginCadastro from './pages/LoginCadastro';
+
+
 
 function App() {
   const [headerStyle, setHeaderStyle] = useState({
@@ -118,6 +121,7 @@ function App() {
           <Route path="/collection" element={<Collection />} />
           <Route path="/about" element={<About />} />
           <Route path="/contact" element={<Contact />} />
+          <Route path="/login" element={<LoginCadastro />} />
         </Routes>
       </main>
     </Router>

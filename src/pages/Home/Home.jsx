@@ -1,15 +1,34 @@
-import React from 'react';
+import React, { useState } from 'react';
 import WatchCards from './WatchCards';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 const Home = () => {
   const navigate = useNavigate();
+
+  const [nome, setNome] = useState('');
+  const [email, setEmail] = useState('');
 
   const handleNavigateToCollection = () => {
     navigate('/collection');
   };
 
-  // Dados para os cards principais
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      await axios.post('http://localhost:3000/usuarios', {
+        nome,
+        email,
+      });
+      alert('Cadastro realizado com sucesso!');
+      setNome('');
+      setEmail('');
+    } catch (err) {
+      console.error(err);
+      alert('Erro ao cadastrar');
+    }
+  };
+
   const watchCards = [
     {
       id: 1,
@@ -27,7 +46,6 @@ const Home = () => {
     }
   ];
 
-  // Dados para as promoções
   const promotions = [
     {
       id: 1,
@@ -52,19 +70,15 @@ const Home = () => {
       paddingTop: '50px',
       minHeight: 'calc(100vh - 180px)'
     }}>
-      {/* Seção Hero Simplificada */}
-      <div style={{
-        maxWidth: '1400px',
-        margin: '0 auto',
-        padding: '2rem'
-      }}>
+      {/* Seção Hero */}
+      <div style={{ maxWidth: '1400px', margin: '0 auto', padding: '2rem' }}>
         <div style={{
           display: 'grid',
           gridTemplateColumns: 'repeat(auto-fit, minmax(400px, 1fr))',
           gap: '2rem',
           marginBottom: '4rem'
         }}>
-          {watchCards.map((watch) => ( // Removido o index não utilizado
+          {watchCards.map((watch) => (
             <div
               key={watch.id}
               style={{
@@ -73,10 +87,6 @@ const Home = () => {
                 borderRadius: '8px',
                 overflow: 'hidden',
                 boxShadow: '0 15px 30px rgba(0,0,0,0.2)',
-                transition: 'transform 0.3s ease',
-                ':hover': {
-                  transform: 'translateY(-5px)'
-                }
               }}
             >
               <div style={{
@@ -93,17 +103,8 @@ const Home = () => {
                 padding: '2rem',
                 textAlign: 'center'
               }}>
-                <h2 style={{
-                  fontSize: '2.2rem',
-                  fontWeight: 300,
-                  marginBottom: '1rem',
-                  letterSpacing: '0.1em'
-                }}>{watch.title}</h2>
-                <p style={{
-                  fontSize: '1.2rem',
-                  marginBottom: '2rem',
-                  fontWeight: 200
-                }}>{watch.subtitle}</p>
+                <h2 style={{ fontSize: '2.2rem', fontWeight: 300, marginBottom: '1rem', letterSpacing: '0.1em' }}>{watch.title}</h2>
+                <p style={{ fontSize: '1.2rem', marginBottom: '2rem', fontWeight: 200 }}>{watch.subtitle}</p>
                 <button 
                   onClick={handleNavigateToCollection}
                   style={{
@@ -112,11 +113,7 @@ const Home = () => {
                     border: '1px solid rgba(255,255,255,0.7)',
                     padding: '0.8rem 2.5rem',
                     fontSize: '1rem',
-                    cursor: 'pointer',
-                    transition: 'all 0.3s ease',
-                    ':hover': {
-                      background: 'rgba(255,255,255,0.1)'
-                    }
+                    cursor: 'pointer'
                   }}
                 >
                   {watch.cta}
@@ -128,19 +125,8 @@ const Home = () => {
       </div>
 
       {/* Seção de Promoções */}
-      <div style={{
-        maxWidth: '1400px',
-        margin: '0 auto 5rem',
-        padding: '0 2rem'
-      }}>
-        <h2 style={{
-          fontSize: '1.8rem',
-          fontWeight: 400,
-          color: 'white',
-          marginBottom: '2rem',
-          textAlign: 'center',
-          letterSpacing: '0.1em'
-        }}>
+      <div style={{ maxWidth: '1400px', margin: '0 auto 5rem', padding: '0 2rem' }}>
+        <h2 style={{ fontSize: '1.8rem', fontWeight: 400, color: 'white', marginBottom: '2rem', textAlign: 'center', letterSpacing: '0.1em' }}>
           Ofertas Especiais
         </h2>
         <div style={{
@@ -148,7 +134,7 @@ const Home = () => {
           gridTemplateColumns: 'repeat(auto-fit, minmax(400px, 1fr))',
           gap: '2rem'
         }}>
-          {promotions.map((promo) => ( // Removido o index não utilizado
+          {promotions.map((promo) => (
             <div
               key={promo.id}
               style={{
@@ -157,10 +143,6 @@ const Home = () => {
                 borderRadius: '8px',
                 overflow: 'hidden',
                 boxShadow: '0 10px 25px rgba(0,0,0,0.2)',
-                transition: 'transform 0.3s ease',
-                ':hover': {
-                  transform: 'translateY(-5px)'
-                }
               }}
             >
               <div style={{
@@ -177,15 +159,8 @@ const Home = () => {
                 padding: '2rem',
                 textAlign: 'center'
               }}>
-                <h2 style={{
-                  fontSize: '2rem',
-                  fontWeight: 400,
-                  marginBottom: '0.5rem'
-                }}>{promo.title}</h2>
-                <p style={{
-                  fontSize: '1.2rem',
-                  marginBottom: '2rem'
-                }}>{promo.subtitle}</p>
+                <h2 style={{ fontSize: '2rem', fontWeight: 400, marginBottom: '0.5rem' }}>{promo.title}</h2>
+                <p style={{ fontSize: '1.2rem', marginBottom: '2rem' }}>{promo.subtitle}</p>
                 <button 
                   onClick={handleNavigateToCollection}
                   style={{
@@ -194,11 +169,7 @@ const Home = () => {
                     border: '1px solid white',
                     padding: '0.8rem 2rem',
                     fontSize: '1rem',
-                    cursor: 'pointer',
-                    transition: 'all 0.3s ease',
-                    ':hover': {
-                      background: 'rgba(255,255,255,0.1)'
-                    }
+                    cursor: 'pointer'
                   }}
                 >
                   {promo.cta}
@@ -209,23 +180,50 @@ const Home = () => {
         </div>
       </div>
 
-      {/* Seção de Destaques */}
-      <div style={{
-        maxWidth: '1400px',
-        margin: '0 auto',
-        padding: '0 2rem 5rem'
-      }}>
-        <h2 style={{
-          fontSize: '1.8rem',
-          fontWeight: 400,
-          color: 'white',
-          marginBottom: '2rem',
-          textAlign: 'center',
-          letterSpacing: '0.1em'
-        }}>
+      {/* Destaques */}
+      <div style={{ maxWidth: '1400px', margin: '0 auto', padding: '0 2rem 5rem' }}>
+        <h2 style={{ fontSize: '1.8rem', fontWeight: 400, color: 'white', marginBottom: '2rem', textAlign: 'center', letterSpacing: '0.1em' }}>
           Nossos Destaques
         </h2>
         <WatchCards />
+      </div>
+
+      {/* Formulário de Cadastro */}
+      <div style={{
+        background: '#fff',
+        padding: '2rem',
+        borderRadius: '8px',
+        maxWidth: '800px',
+        margin: '0 auto 5rem'
+      }}>
+        <h2 style={{ color: '#333', marginBottom: '1rem' }}>Cadastre-se para receber novidades</h2>
+        <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+          <input
+            type="text"
+            placeholder="Nome"
+            value={nome}
+            onChange={(e) => setNome(e.target.value)}
+            required
+            style={{ padding: '0.8rem', fontSize: '1rem' }}
+          />
+          <input
+            type="email"
+            placeholder="Email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+            style={{ padding: '0.8rem', fontSize: '1rem' }}
+          />
+          <button type="submit" style={{
+            backgroundColor: '#000',
+            color: '#fff',
+            padding: '0.8rem',
+            border: 'none',
+            cursor: 'pointer'
+          }}>
+            Cadastrar
+          </button>
+        </form>
       </div>
     </div>
   );
